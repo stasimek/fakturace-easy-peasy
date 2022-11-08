@@ -13,6 +13,18 @@
 	</head>
 	<body>
 		<h1>Fakturace easy-peasy</h1>
-		<div class="container"></div>
+		<div class="container unauthenticated">
+			Login with <a href="/oauth2/authorization/github">GitHub</a>
+		</div>
+		<div class="container authenticated" style="display:none">
+			Logged in as: <span id="user"></span>
+		</div>
+		<script>
+			$.get("/user", function (data) {
+				$("#user").html(data.name);
+				$(".unauthenticated").hide();
+				$(".authenticated").show();
+			});
+		</script>
 	</body>
 </html>
