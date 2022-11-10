@@ -17,7 +17,9 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -28,12 +30,13 @@ public class SecurityConfiguration {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http
+		return http
 				// URLs available without login.
 				.authorizeRequests(
 						a -> a.antMatchers("/", "/error", "/webjars/**").permitAll()
 								.anyRequest().authenticated()
 				)
+				// On AJAX request 401 instead of the default redirecting to a login page.
 				.exceptionHandling(
 						e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
 				)
@@ -47,18 +50,22 @@ public class SecurityConfiguration {
 						c -> c.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 				)
 				.oauth2Login(
+						// Set session "error.message" on failure, than redirect to login page.
 						o -> o.failureHandler(
 								(request, response, exception) -> {
 									request.getSession().setAttribute("error.message", exception.getMessage());
-									response.sendRedirect("/");
+									AuthenticationFailureHandler handler = new SimpleUrlAuthenticationFailureHandler("/");
+									handler.onAuthenticationFailure(request, response, exception);
 								}
 						)
-				);
-		return http.build();
+				)
+				.build();
 	}
 
 	@Bean
-	public WebClient rest(ClientRegistrationRepository clients, OAuth2AuthorizedClientRepository authz) {
+	public WebClient rest(
+			ClientRegistrationRepository clients, OAuth2AuthorizedClientRepository authz
+	) {
 		return WebClient
 				.builder()
 				.filter(new ServletOAuth2AuthorizedClientExchangeFilterFunction(clients, authz))
@@ -78,7 +85,9 @@ public class SecurityConfiguration {
 		};
 	}
 
-	private OAuth2User checkUserIsMemberOfSpringTeam(OAuth2UserRequest request, OAuth2User user, WebClient rest) {
+	private OAuth2User checkUserIsMemberOfSpringTeam(
+			OAuth2UserRequest request, OAuth2User user, WebClient rest
+	) {
 		OAuth2AuthorizedClient client = new OAuth2AuthorizedClient(
 				request.getClientRegistration(), user.getName(), request.getAccessToken()
 		);
@@ -90,11 +99,13 @@ public class SecurityConfiguration {
 				.bodyToMono(List.class)
 				.block();
 
-		if (orgs.stream().anyMatch(org -> "spring-projects".equals(org.get("login")))) {
+		if (orgs != null && orgs.stream().anyMatch(org -> "spring-projects".equals(org.get("login")))) {
 			return user;
 		}
 
-		throw new OAuth2AuthenticationException(new OAuth2Error("invalid_token", "Not in Spring Team", ""));
+		throw new OAuth2AuthenticationException(
+				new OAuth2Error("invalid_token", "Not in Spring Team", "")
+		);
 	}
 
 }
