@@ -1,6 +1,6 @@
 package cz.stasimek.fakturaceeasypeasy.controller;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -12,7 +12,16 @@ public class LoginController {
 
 	@GetMapping("/user")
 	public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
-		return Collections.singletonMap("name", principal.getAttribute("login"));
+		Map map = new HashMap();
+		if (principal.getAttribute("name") != null) {
+			map.put("name", principal.getAttribute("name"));
+		} else if (principal.getAttribute("login") != null) {
+			map.put("name", principal.getAttribute("login"));
+		} else if (principal.getAttribute("email") != null) {
+			map.put("name", principal.getAttribute("email"));
+		}
+		//map.put("principal", principal);
+		return map;
 	}
 
 }
