@@ -2,12 +2,14 @@ package cz.stasimek.fakturaceeasypeasy.service;
 
 import cz.stasimek.fakturaceeasypeasy.entity.User;
 import cz.stasimek.fakturaceeasypeasy.enumeration.Provider;
+import cz.stasimek.fakturaceeasypeasy.exception.ApplicationException;
 import cz.stasimek.fakturaceeasypeasy.repository.UserRepository;
 import java.util.UUID;
 import javax.persistence.EntityManager;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,6 +20,27 @@ public class UserService {
 
 	@Autowired
 	private EntityManager em;
+
+	public void createUserIfNotExist(Provider provider, OAuth2User oAuth2User) {
+		String login = oAuth2User.getAttribute("login");
+		String email = oAuth2User.getAttribute("email");
+		String name = oAuth2User.getAttribute("name");
+		if (login == null) {
+			login = email;
+		}
+		if (login == null) {
+			throw new ApplicationException("Cannot create user, login is missing.");
+		}
+		User user = find(provider, login, email);
+		if (user == null) {
+			user = new User();
+			user.setProvider(provider);
+			user.setLogin(login);
+			user.setEmail(email);
+			user.setName(name);
+			create(user);
+		}
+	}
 
 	public User create(User user) {
 		return userRepository.save(user);
