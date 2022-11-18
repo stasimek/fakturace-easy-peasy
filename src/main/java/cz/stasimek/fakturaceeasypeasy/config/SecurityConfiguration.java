@@ -36,7 +36,7 @@ public class SecurityConfiguration {
 		return http
 				// URLs available without login.
 				.authorizeRequests(
-						a -> a.antMatchers("/", "/error", "/webjars/**").permitAll()
+						a -> a.antMatchers("/", "/error", "/webjars/**", "/static/**").permitAll()
 								.anyRequest().authenticated()
 				)
 				// On AJAX request 401 instead of the default redirecting to a login page.
