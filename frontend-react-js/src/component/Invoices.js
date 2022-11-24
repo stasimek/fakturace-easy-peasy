@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Button, ButtonGroup, Container, Table } from 'reactstrap';
-import AppNavbar from './AppNavbar';
+import { Button, ButtonGroup, Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 export default class Invoices extends Component {
@@ -12,13 +11,13 @@ export default class Invoices extends Component {
 	}
 
 	componentDidMount() {
-		fetch('/invoices')
+		fetch('/api/invoices')
 				.then(response => response.json())
 				.then(data => this.setState({invoices: data}));
 	}
 
 	async remove(id) {
-		await fetch(`/invoice/${id}`, {
+		await fetch(`/api/invoice/${id}`, {
 			method: 'DELETE',
 			headers: {
 				'Accept': 'application/json',
@@ -53,24 +52,21 @@ export default class Invoices extends Component {
 
 		return (
 			<div>
-				<AppNavbar/>
-				<Container fluid>
-					<div className="float-right">
-						<Button color="success" tag={Link} to="/invoice/new">Add Invoice</Button>
-					</div>
-					<h3>Invoices</h3>
-					<Table className="mt-4">
-						<thead>
-							<tr>
-								<th width="60%">Number</th>
-								<th width="40%">Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							{invoiceList}
-						</tbody>
-					</Table>
-				</Container>
+				<div className="float-right">
+					<Button color="success" tag={Link} to="/invoice/new">Add Invoice</Button>
+				</div>
+				<h2>Invoices</h2>
+				<Table className="mt-4">
+					<thead>
+						<tr>
+							<th width="60%">Number</th>
+							<th width="40%">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{invoiceList}
+					</tbody>
+				</Table>
 			</div>
 		);
 	}

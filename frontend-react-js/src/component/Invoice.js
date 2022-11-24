@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
-import AppNavbar from './AppNavbar';
 
 export default class Invoice extends Component {
 
@@ -18,7 +17,7 @@ export default class Invoice extends Component {
 
 	async componentDidMount() {
 		if (this.props.match.params.id !== 'new') {
-			const invoice = await (await fetch(`/invoice/${this.props.match.params.id}`)).json();
+			const invoice = await (await fetch(`/api/invoice/${this.props.match.params.id}`)).json();
 			this.setState({item: invoice});
 		}
 	}
@@ -36,7 +35,7 @@ export default class Invoice extends Component {
 		event.preventDefault();
 		const {item} = this.state;
 
-		await fetch('/invoice' + (item.id ? '/' + item.id : ''), {
+		await fetch('/api/invoice' + (item.id ? '/' + item.id : ''), {
 			method: (item.id) ? 'PUT' : 'POST',
 			headers: {
 				'Accept': 'application/json',
@@ -52,21 +51,18 @@ export default class Invoice extends Component {
 
 		return (
 			<div>
-				<AppNavbar/>
-				<Container>
-					<h2>{item.id ? 'Edit Invoice' : 'Add Invoice'}</h2>
-					<Form onSubmit={this.handleSubmit}>
-						<FormGroup>
-							<Label for="number">Number</Label>
-							<Input type="text" name="number" id="number" value={item.number || ''}
-								   onChange={this.handleChange} autoComplete="number"/>
-						</FormGroup>
-						<FormGroup>
-							<Button color="primary" type="submit">Save</Button>{' '}
-							<Button color="secondary" tag={Link} to="/invoices">Cancel</Button>
-						</FormGroup>
-					</Form>
-				</Container>
+				<h2>{item.id ? 'Edit Invoice' : 'Add Invoice'}</h2>
+				<Form onSubmit={this.handleSubmit}>
+					<FormGroup>
+						<Label for="number">Number</Label>
+						<Input type="text" name="number" id="number" value={item.number || ''}
+							   onChange={this.handleChange} autoComplete="number"/>
+					</FormGroup>
+					<FormGroup>
+						<Button color="primary" type="submit">Save</Button>{' '}
+						<Button color="secondary" tag={Link} to="/invoices">Cancel</Button>
+					</FormGroup>
+				</Form>
 			</div>
 		);
 	}

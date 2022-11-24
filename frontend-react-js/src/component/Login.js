@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import $ from 'jquery';
 import Cookies from 'js-cookie';
+import { NavbarText } from 'reactstrap';
 
 export default class Login extends Component {
 	constructor(props) {
@@ -9,12 +10,16 @@ export default class Login extends Component {
 		this.handleLoad = this.handleLoad.bind(this);
 	}
 
+	componentWillMount() {
+		this.handleLoad();
+	}
+
 	componentDidMount() {
-		window.addEventListener('load', this.handleLoad);
+		//window.addEventListener('load', this.handleLoad);
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener('load', this.handleLoad)
+		//window.removeEventListener('load', this.handleLoad)
 	}
 
 	handleLoad() {
@@ -60,21 +65,15 @@ export default class Login extends Component {
 	render() {
 		return (
 			<div>
-				<div className="container text-danger error"></div>
-				<div className="container unauthenticated">
-					<div>
-						Login with <a href="/oauth2/authorization/github">GitHub</a>
-					</div>
-					<div>
-						Login with <a href="/oauth2/authorization/google">Google</a>
-					</div>
-				</div>
-				<div className="container authenticated" style={{display:'none'}}>
-					Logged in as: <span id="user"></span>
-					<div>
-						<button onClick={this.logout} className="btn btn-primary">Logout</button>
-					</div>
-				</div>
+				<NavbarText className="text-danger error pe-3"></NavbarText>
+				<NavbarText className="unauthenticated">
+					<span className="pe-3">Login with <a href="/oauth2/authorization/github">GitHub</a></span>
+					<span>Login with <a href="/oauth2/authorization/google">Google</a></span>
+				</NavbarText>
+				<NavbarText className="authenticated" style={{display:'none'}}>
+					Logged in as: <span id="user" className="pe-3"></span>
+					<button onClick={this.logout} className="btn btn-primary">Logout</button>
+				</NavbarText>
 			</div>
 		);
 	}
