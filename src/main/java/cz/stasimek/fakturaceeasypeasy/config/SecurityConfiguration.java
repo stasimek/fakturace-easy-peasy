@@ -3,6 +3,7 @@ package cz.stasimek.fakturaceeasypeasy.config;
 import cz.stasimek.fakturaceeasypeasy.enumeration.Provider;
 import cz.stasimek.fakturaceeasypeasy.exception.ApplicationException;
 import cz.stasimek.fakturaceeasypeasy.service.UserService;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
+import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -36,7 +39,7 @@ public class SecurityConfiguration {
 		return http
 				// URLs available without login.
 				.authorizeRequests(
-						a -> a.antMatchers("/", "/error", "/webjars/**", "/static/**").permitAll()
+						a -> a.antMatchers("/", "/error", "/webjars/**", "/static/**", "/*").permitAll()
 								.anyRequest().authenticated()
 				)
 				// On AJAX request 401 instead of the default redirecting to a login page.
@@ -52,15 +55,38 @@ public class SecurityConfiguration {
 				.csrf(
 						c -> c.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 				)
+				// On login save "Referer" HTTP header to session as "login.redirectUri".
+				.addFilterBefore(
+						(request, response, chain) -> {
+							HttpServletRequest r = ((HttpServletRequest) request);
+							String uri = r.getRequestURI();
+							if (uri != null && uri.startsWith("/oauth2/authorization/")) {
+								r.getSession().setAttribute("login.redirectUri", r.getHeader("Referer"));
+							}
+							chain.doFilter(request, response);
+						},
+						SecurityContextHolderFilter.class
+				)
 				.oauth2Login(
-						// Set session "error.message" on failure, than redirect to login page.
-						o -> o.failureHandler(
-								(request, response, exception) -> {
-									request.getSession().setAttribute("error.message", exception.getMessage());
-									AuthenticationFailureHandler handler = new SimpleUrlAuthenticationFailureHandler("/");
-									handler.onAuthenticationFailure(request, response, exception);
-								}
-						)
+						o -> {
+							// On failure set session "login.errorMessage", than redirect to login page.
+							o.failureHandler(
+									(request, response, exception) -> {
+										request.getSession().setAttribute("login.errorMessage", exception.getMessage());
+										AuthenticationFailureHandler handler = new SimpleUrlAuthenticationFailureHandler("/");
+										handler.onAuthenticationFailure(request, response, exception);
+									}
+							);
+							// On success redirect user to original URL stored in session "login.redirectUri".
+							o.successHandler(
+									(request, response, authentication) -> {
+										String redirectUri = (String) request.getSession().getAttribute("login.redirectUri");
+										request.getSession().removeAttribute("login.redirectUri");
+										SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler(redirectUri);
+										handler.onAuthenticationSuccess(request, response, authentication);
+									}
+							);
+						}
 				)
 				.build();
 	}

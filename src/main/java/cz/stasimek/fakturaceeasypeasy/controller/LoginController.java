@@ -27,8 +27,8 @@ public class LoginController {
 
 	@GetMapping("/error")
 	public String error(HttpServletRequest request) {
-		String message = (String) request.getSession().getAttribute("error.message");
-		request.getSession().removeAttribute("error.message");
+		String message = (String) request.getSession().getAttribute("login.errorMessage");
+		request.getSession().removeAttribute("login.errorMessage");
 		return message;
 	}
 
