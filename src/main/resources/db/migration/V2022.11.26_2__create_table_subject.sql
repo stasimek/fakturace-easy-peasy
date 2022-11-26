@@ -1,0 +1,20 @@
+create table subject (
+	id char(16) for bit data not null,
+	user_id char(16) for bit data not null,
+	type varchar(20),
+	legal_form varchar(20),
+	company_name varchar(255),
+	street varchar(100),
+	city varchar(100),
+	zip varchar(10),
+	country varchar(3),
+	company_number varchar(20),
+	vat_number varchar(20),
+	default_due_period integer,
+	default_currency varchar(3),
+	created_at timestamp not null,
+	updated_at timestamp not null,
+	deleted boolean,
+	primary key (id),
+	constraint FK_subject_user_id foreign key (user_id) references "user"
+);

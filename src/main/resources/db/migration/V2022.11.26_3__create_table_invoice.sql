@@ -1,0 +1,22 @@
+create table invoice (
+	id char(16) for bit data not null,
+	user_id char(16) for bit data not null,
+	number varchar(20),
+	type varchar(20),
+	subject_id char(16) for bit data not null,
+	issue_date date not null,
+	taxable_supply_date date,
+	due_date date not null,
+	receive_date date not null,
+	variable_symbol bigint,
+	currency varchar(3),
+	exchange_rate decimal(19,2) not null,
+	order_number varchar(20),
+	description varchar(255),
+	created_at timestamp not null,
+	updated_at timestamp not null,
+	deleted boolean,
+	primary key (id),
+	constraint FK_invoice_user_id foreign key (user_id) references "user",
+	constraint FK_invoice_subject_id foreign key (subject_id) references subject
+);
