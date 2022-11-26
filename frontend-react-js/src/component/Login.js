@@ -24,7 +24,7 @@ export default class Login extends Component {
 
 	handleLoad() {
 		// Get logged user name
-		$.get("/user", function (data) {
+		$.get("/api/user", function (data) {
 			if ('name' in data) {
 				$("#user").html(data.name);
 				$(".unauthenticated").hide();
@@ -45,7 +45,7 @@ export default class Login extends Component {
 		});
 
 		// Show login error
-		$.get("/error", function (data) {
+		$.get("/api/error", function (data) {
 			if (data) {
 				$(".error").html(data);
 			} else {
@@ -57,7 +57,7 @@ export default class Login extends Component {
 	// Logout button
 	logout(e) {
 		e.preventDefault();
-		$.post("/logout", function () {
+		$.post("/api/logout", function () {
 			$("#user").html('');
 			$(".unauthenticated").show();
 			$(".authenticated").hide();
