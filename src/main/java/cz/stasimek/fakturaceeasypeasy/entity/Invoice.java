@@ -28,11 +28,13 @@ public class Invoice extends BaseEntity {
 	private User user;
 
 	// Číslo faktury
+	@NotNull
 	@Size(max = 20)
-	@Column(length = 20)
+	@Column(length = 20, nullable = false)
 	private String number;
 
-	@Column(length = 20)
+	@NotNull
+	@Column(length = 20, nullable = false)
 	@Enumerated(EnumType.STRING)
 	private InvoiceType type;
 
@@ -41,6 +43,7 @@ public class Invoice extends BaseEntity {
 	private Subject subject;
 
 	// Datum vystavení
+	@NotNull
 	@Column(nullable = false)
 	private LocalDate issueDate;
 
@@ -49,11 +52,12 @@ public class Invoice extends BaseEntity {
 	private LocalDate taxableSupplyDate;
 
 	// Datum splatnosti
+	@NotNull
 	@Column(nullable = false)
 	private LocalDate dueDate;
 
 	// Datum přijetí - if InvoiceType = RECEIVED
-	@Column(nullable = false)
+	@Column
 	private LocalDate receiveDate;
 
 	// Variabilní symbol
@@ -64,8 +68,7 @@ public class Invoice extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private Currency currency;
 
-	@NotNull
-	@Column(nullable = false)
+	@Column
 	private BigDecimal exchangeRate;
 
 	// Číslo objednávky

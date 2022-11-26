@@ -25,32 +25,39 @@ public class Subject extends BaseEntity {
 	@ManyToOne(optional = false)
 	private User user;
 
-	@Column(length = 20)
+	@NotNull
+	@Column(length = 20, nullable = false)
 	@Enumerated(EnumType.STRING)
 	private SubjectType type;
 
-	@Column(length = 20)
+	@NotNull
+	@Column(length = 20, nullable = false)
 	@Enumerated(EnumType.STRING)
 	private SubjectLegalForm legalForm;
 
+	@NotNull
 	@Size(max = 255)
-	@Column(length = 255)
+	@Column(length = 255, nullable = false)
 	private String companyName;
 
+	@NotNull
 	@Size(max = 100)
-	@Column(length = 100)
+	@Column(length = 100, nullable = false)
 	private String street;
 
+	@NotNull
 	@Size(max = 100)
-	@Column(length = 100)
+	@Column(length = 100, nullable = false)
 	private String city;
 
 	// PSČ
+	@NotNull
 	@Size(max = 10)
-	@Column(length = 10)
+	@Column(length = 10, nullable = false)
 	private String zip;
 
-	@Column(length = 3)
+	@NotNull
+	@Column(length = 3, nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Country country;
 

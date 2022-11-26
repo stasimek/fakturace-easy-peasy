@@ -1,13 +1,13 @@
 create table subject (
 	id char(16) for bit data not null,
-	user_id char(16) for bit data not null,
-	type varchar(20),
-	legal_form varchar(20),
-	company_name varchar(255),
-	street varchar(100),
-	city varchar(100),
-	zip varchar(10),
-	country varchar(3),
+	"user_id" char(16) for bit data not null,
+	type varchar(20) not null,
+	legal_form varchar(20) not null,
+	company_name varchar(255) not null,
+	street varchar(100) not null,
+	city varchar(100) not null,
+	zip varchar(10) not null,
+	country varchar(3) not null,
 	company_number varchar(20),
 	vat_number varchar(20),
 	default_due_period integer,
@@ -16,5 +16,5 @@ create table subject (
 	updated_at timestamp not null,
 	deleted boolean,
 	primary key (id),
-	constraint FK_subject_user_id foreign key (user_id) references "user"
+	constraint FK_subject_user_id foreign key ("user_id") references "user"
 );
