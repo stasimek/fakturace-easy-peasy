@@ -25,9 +25,11 @@ export default class Login extends Component {
 	handleLoad() {
 		// Get logged user name
 		$.get("/user", function (data) {
-			$("#user").html(data.name);
-			$(".unauthenticated").hide();
-			$(".authenticated").show();
+			if ('name' in data) {
+				$("#user").html(data.name);
+				$(".unauthenticated").hide();
+				$(".authenticated").show();
+			}
 		});
 
 		// CSRF

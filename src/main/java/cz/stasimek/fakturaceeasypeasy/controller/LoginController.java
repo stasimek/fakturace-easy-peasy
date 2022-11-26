@@ -13,15 +13,17 @@ public class LoginController {
 
 	@GetMapping("/user")
 	public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
-		Map map = new HashMap();
-		if (principal.getAttribute("name") != null) {
-			map.put("name", principal.getAttribute("name"));
-		} else if (principal.getAttribute("login") != null) {
-			map.put("name", principal.getAttribute("login"));
-		} else if (principal.getAttribute("email") != null) {
-			map.put("name", principal.getAttribute("email"));
+		Map<String, Object> map = new HashMap<>();
+		if (principal != null) {
+			if (principal.getAttribute("name") != null) {
+				map.put("name", principal.getAttribute("name"));
+			} else if (principal.getAttribute("login") != null) {
+				map.put("name", principal.getAttribute("login"));
+			} else if (principal.getAttribute("email") != null) {
+				map.put("name", principal.getAttribute("email"));
+			}
+			//map.put("principal", principal);
 		}
-		//map.put("principal", principal);
 		return map;
 	}
 
