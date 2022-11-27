@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import { Button, ButtonGroup, Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-export default class Invoices extends Component {
+class Invoices extends Component {
 
 	constructor(props) {
 		super(props);
@@ -30,6 +31,7 @@ export default class Invoices extends Component {
 	}
 
 	render() {
+		const {t} = this.props;
 		const {invoices, isLoading} = this.state;
 
 		if (isLoading) {
@@ -71,3 +73,5 @@ export default class Invoices extends Component {
 		);
 	}
 }
+
+export default withTranslation()(Invoices);

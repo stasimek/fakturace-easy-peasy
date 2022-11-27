@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { withTranslation } from 'react-i18next';
 import {
 	Collapse,
 	Navbar,
@@ -15,7 +16,7 @@ import {
 import {Link} from 'react-router-dom';
 import Login from './Login';
 
-export default class AppNavbar extends Component {
+class AppNavbar extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {isOpen: false};
@@ -29,6 +30,7 @@ export default class AppNavbar extends Component {
 	}
 
 	render() {
+		const {t} = this.props;
 		return (
 			<Navbar color="dark" dark expand="md">
 				<NavbarBrand tag={Link} to="/">Fakturace easy-peasy</NavbarBrand>
@@ -36,7 +38,7 @@ export default class AppNavbar extends Component {
 				<Collapse isOpen={this.isOpen} navbar>
 					<Nav className="me-auto" navbar>
 						<NavItem>
-							<NavLink tag={Link} to="/invoices">Invoices</NavLink>
+							<NavLink tag={Link} to="/invoices">{t('Invoices')}</NavLink>
 						</NavItem>
 						<UncontrolledDropdown nav inNavbar>
 							<DropdownToggle nav caret>
@@ -56,3 +58,5 @@ export default class AppNavbar extends Component {
 		);
 	}
 }
+
+export default withTranslation()(AppNavbar);

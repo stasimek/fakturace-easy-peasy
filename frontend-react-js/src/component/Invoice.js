@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { withTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
 
-export default class Invoice extends Component {
+class Invoice extends Component {
 
 	emptyItem = {
 		number: ''
@@ -47,8 +48,8 @@ export default class Invoice extends Component {
 	}
 
 	render() {
+		const {t} = this.props;
 		const {item} = this.state;
-
 		return (
 			<div>
 				<h2>{item.id ? 'Edit Invoice' : 'Add Invoice'}</h2>
@@ -67,3 +68,5 @@ export default class Invoice extends Component {
 		);
 	}
 }
+
+export default withTranslation()(Invoice);

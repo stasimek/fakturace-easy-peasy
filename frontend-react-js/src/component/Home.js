@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import '../App.css';
+import { withTranslation } from 'react-i18next';
 
-export default class Home extends Component {
+class Home extends Component {
 
 	render() {
+		const {t} = this.props;
 		return (
 			<div>
 				<h2>Home</h2>
@@ -11,3 +12,5 @@ export default class Home extends Component {
 		);
 	}
 }
+
+export default withTranslation()(Home);

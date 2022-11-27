@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
+import { withTranslation } from 'react-i18next';
 import {Link} from 'react-router-dom';
 import $ from 'jquery';
 import Cookies from 'js-cookie';
 import { NavbarText } from 'reactstrap';
 
-export default class Login extends Component {
+class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.handleLoad = this.handleLoad.bind(this);
@@ -65,6 +66,7 @@ export default class Login extends Component {
 	}
 
 	render() {
+		const {t} = this.props;
 		return (
 			<div>
 				<NavbarText className="text-danger error pe-3"></NavbarText>
@@ -80,3 +82,5 @@ export default class Login extends Component {
 		);
 	}
 }
+
+export default withTranslation()(Login);
