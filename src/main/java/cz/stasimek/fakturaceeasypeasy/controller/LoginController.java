@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class LoginController {
 
-	@GetMapping("/user")
+	@GetMapping("/login/user")
 	public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
 		Map<String, Object> map = new HashMap<>();
 		if (principal != null) {
@@ -29,7 +29,7 @@ public class LoginController {
 		return map;
 	}
 
-	@GetMapping("/error")
+	@GetMapping("/login/error")
 	public String error(HttpServletRequest request) {
 		String message = (String) request.getSession().getAttribute("login.errorMessage");
 		request.getSession().removeAttribute("login.errorMessage");

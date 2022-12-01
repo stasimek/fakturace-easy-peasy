@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
+import Cookies from 'js-cookie';
 
 class Invoice extends Component {
 
@@ -40,7 +41,8 @@ class Invoice extends Component {
 			method: (item.id) ? 'PUT' : 'POST',
 			headers: {
 				'Accept': 'application/json',
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				'X-XSRF-TOKEN': Cookies.get('XSRF-TOKEN'),
 			},
 			body: JSON.stringify(item),
 		});

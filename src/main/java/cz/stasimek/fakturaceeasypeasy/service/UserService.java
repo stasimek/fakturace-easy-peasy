@@ -21,7 +21,7 @@ public class UserService {
 	@Autowired
 	private EntityManager em;
 
-	public void createUserIfNotExist(Provider provider, OAuth2User oAuth2User) {
+	public User createUserIfNotExist(Provider provider, OAuth2User oAuth2User) {
 		String login = oAuth2User.getAttribute("login");
 		String email = oAuth2User.getAttribute("email");
 		String name = oAuth2User.getAttribute("name");
@@ -38,8 +38,9 @@ public class UserService {
 			user.setLogin(login);
 			user.setEmail(email);
 			user.setName(name);
-			create(user);
+			user = create(user);
 		}
+		return user;
 	}
 
 	public User create(User user) {
@@ -52,6 +53,10 @@ public class UserService {
 
 	public void delete(UUID id) {
 		userRepository.deleteById(id);
+	}
+
+	public User findById(UUID id) {
+		return  userRepository.findById(id).orElseThrow();
 	}
 
 	public User find(Provider provider, String login, String email) {

@@ -25,7 +25,7 @@ class Login extends Component {
 
 	handleLoad() {
 		// Get logged user name
-		$.get("/api/user", function (data) {
+		$.get("/api/login/user", function (data) {
 			if ('name' in data) {
 				$("#user").html(data.name);
 				$(".unauthenticated").hide();
@@ -46,7 +46,7 @@ class Login extends Component {
 		});
 
 		// Show login error
-		$.get("/api/error", function (data) {
+		$.get("/api/login/error", function (data) {
 			if (data) {
 				$(".error").html(data);
 			} else {

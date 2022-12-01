@@ -1,5 +1,8 @@
 package cz.stasimek.fakturaceeasypeasy.config;
 
+import cz.stasimek.fakturaceeasypeasy.config.user.AppOAuth2User;
+import cz.stasimek.fakturaceeasypeasy.config.user.AppOidcUser;
+import cz.stasimek.fakturaceeasypeasy.entity.User;
 import cz.stasimek.fakturaceeasypeasy.enumeration.Provider;
 import cz.stasimek.fakturaceeasypeasy.exception.ApplicationException;
 import cz.stasimek.fakturaceeasypeasy.service.UserService;
@@ -39,7 +42,7 @@ public class SecurityConfiguration {
 		return http
 				// URLs available without login.
 				.authorizeRequests(
-						a -> a.antMatchers("/", "/api/error", "/static/**", "/api/**", "/**").permitAll()
+						a -> a.antMatchers("/", "/api/login/error", "/static/**", "/api/**", "/**").permitAll()
 								.anyRequest().authenticated()
 				)
 				// On AJAX request 401 instead of the default redirecting to a login page.
@@ -143,8 +146,12 @@ public class SecurityConfiguration {
 		//if (provider == Provider.GITHUB) {
 		//	return checkUserIsMemberOfSpringTeam(request, user, rest);
 		//}
-		userService.createUserIfNotExist(provider, user);
-		return user;
+		User appUser = userService.createUserIfNotExist(provider, user);
+		if (user instanceof OidcUser) {
+			return new AppOidcUser((OidcUser) user, appUser);
+		} else {
+			return new AppOAuth2User(user, appUser);
+		}
 	}
 
 //	private OAuth2User checkUserIsMemberOfSpringTeam(

@@ -90,7 +90,7 @@ public class User extends BaseEntity {
 
 	@Column(length = 3)
 	@Enumerated(EnumType.STRING)
-	private Currency currency;
+	private Currency currency = Currency.CZK;
 
 	// Finanční úřad - územní pracoviště
 	@Column(length = 50)

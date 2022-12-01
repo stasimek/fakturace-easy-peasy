@@ -52,6 +52,11 @@ class AppNavbar extends Component {
 						</DropdownMenu>
 						</UncontrolledDropdown>
 					</Nav>
+					<Nav navbar>
+						<NavItem>
+							<NavLink tag={Link} to="/setting">{t('Setting')}</NavLink>
+						</NavItem>
+					</Nav>
 					<Login/>
 				</Collapse>
 			</Navbar>

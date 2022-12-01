@@ -1,10 +1,15 @@
 package cz.stasimek.fakturaceeasypeasy.enumeration;
 
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.Getter;
 
 @Getter
 /**
- * CZ-NACE (Nomenclature statistique des activités économiques dans la Communauté européenne)
+ * CZ-NACE (Nomenclature statistique des activités économiques dans la
+ * Communauté européenne)
  *
  * https://cs.wikipedia.org/wiki/CZ-NACE
  */
@@ -996,10 +1001,23 @@ public enum CzNace {
 	private final String nameCs;
 
 	CzNace(String nameCs) {
-		this.nameCs = nameCs;
+		this.nameCs = firstLetterUpperCaseRestLowerCase(nameCs);
 	}
 
 	public String getCode() {
 		return this.name().replace("N_", "");
+	}
+
+	public static Map<String, String> valuesMap() {
+		return Arrays.stream(CzNace.values())
+				.map((CzNace c) -> new String[]{c.name(), c.getNameCs()})
+				.sorted((x, y) -> x[1].compareTo(y[1])) // Order items by nameCs
+				.collect(Collectors.toMap(p -> p[0], p -> p[1], (x, y) -> y, LinkedHashMap::new));
+	}
+
+	private static String firstLetterUpperCaseRestLowerCase(String data) {
+		String firstLetter = data.substring(0, 1).toUpperCase();
+		String restLetters = data.substring(1).toLowerCase();
+		return firstLetter + restLetters;
 	}
 }

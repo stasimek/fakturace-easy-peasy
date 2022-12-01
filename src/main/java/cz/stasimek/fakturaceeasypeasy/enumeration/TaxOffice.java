@@ -1,5 +1,11 @@
 package cz.stasimek.fakturaceeasypeasy.enumeration;
 
+import java.text.Collator;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.Getter;
 
 @Getter
@@ -220,5 +226,25 @@ public enum TaxOffice {
 		this.regionalTaxOfficeId = regionalTaxOfficeId;
 		this.regionalTaxOfficeName = regionalTaxOfficeName;
 		this.taxOfficeId = taxOfficeId;
+	}
+
+	public static Map<String, String> valuesMap() {
+		return Arrays.stream(TaxOffice.values())
+				.map((TaxOffice t) -> new String[]{t.name(), t.getRegionalTaxOfficeName()})
+				.sorted((x, y) -> {
+					// Order items by name (specialized will be last)
+					if (x[0].startsWith("SPECIALIZED_TO_") && !y[0].startsWith("SPECIALIZED_TO_")) {
+						return 1;
+					}
+					if (!x[0].startsWith("SPECIALIZED_TO_") && y[0].startsWith("SPECIALIZED_TO_")) {
+						return -1;
+					}
+					String cityX = x[1].replaceFirst("Územní pracoviště (?:v|ve|pro)? ?(.+)", "$1");
+					String cityY = y[1].replaceFirst("Územní pracoviště (?:v|ve|pro)? ?(.+)", "$1");
+					Locale czech = Locale.of("cs", "CZ");
+					Collator collator = Collator.getInstance(czech); // Collator can sort Czech strings
+					return collator.compare(cityX, cityY);
+				})
+				.collect(Collectors.toMap(p -> p[0], p -> p[1], (x, y) -> y, LinkedHashMap::new));
 	}
 }

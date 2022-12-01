@@ -3,5 +3,32 @@
 	"Email": "E-mail",
 
 	"Invoice": "Faktura",
-	"Invoices": "Faktury"
+	"Invoices": "Faktury",
+
+	"--": "--",
+
+	"Username": "Uživatelské jméno",
+	"Name": "Jméno",
+	"Company name / name": "Jméno společnosti / jméno",
+	"Company ID number": "IČO",
+	"Legal form": "Právní forma",
+	"Main business": "Hlavní činnost",
+	"Street": "Ulice",
+	"City": "Město",
+	"ZIP code": "PSČ",
+	"Country": "Země",
+	"VAT number": "DIČ",
+	"VAT type": "Typ plátce",
+	"VAT period": "Zdaňovací období",
+	"Tax office": "Finanční úřad",
+	"Currency": "Měna",
+	"Note": "Poznámka",
+	"Company registered in the trade register...": "Podnikatel zapsán v živ. rejstříku...",
+	"Phone": "Telefon",
+	"Default due period (days)": "Výchozí splatnost faktur (dní)",
+	"Bank name": "Název banky",
+	"Bank account number": "Číslo účtu",
+	"IBAN": "IBAN",
+	"BIC (SWIFT)": "BIC (SWIFT)"
+
 }
