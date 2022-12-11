@@ -1,12 +1,12 @@
 {
+	"--": "--",
+	"Save": "Uložit",
+	"Cancel": "Zrušit",
+	"Add row": "Přidat řádek",
+	"Remove row": "Odstranit řádek",
+
 	"Setting": "Nastavení",
 	"Email": "E-mail",
-
-	"Invoice": "Faktura",
-	"Invoices": "Faktury",
-
-	"--": "--",
-
 	"Username": "Uživatelské jméno",
 	"Name": "Jméno",
 	"Company name / name": "Jméno společnosti / jméno",
@@ -25,10 +25,36 @@
 	"Note": "Poznámka",
 	"Company registered in the trade register...": "Podnikatel zapsán v živ. rejstříku...",
 	"Phone": "Telefon",
-	"Default due period (days)": "Výchozí splatnost faktur (dní)",
 	"Bank name": "Název banky",
 	"Bank account number": "Číslo účtu",
 	"IBAN": "IBAN",
-	"BIC (SWIFT)": "BIC (SWIFT)"
+	"BIC (SWIFT)": "BIC (SWIFT)",
+	"Default due period (days)": "Výchozí splatnost faktur (dní)",
+	"Default unit": "Výchozí jednotka",
+	"Default unit price": "Výchozí jednotková cena",
 
+	"Invoice": "Faktura",
+	"Issued invoices": "Vydané faktury",
+	"Received invoices": "Přijaté faktury",
+	"Issue new invoice": "Vydat novou fakturu",
+	"Add received invoice": "Vložit přijatou fakturu",
+	"New invoice": "Nová faktura",
+	"Edit issued invoice": "Úprava vydané faktury",
+	"Received invoice": "Přijatá faktura",
+	"Edit received invoice": "Úprava přijaté faktury",
+	"Invoice number": "Číslo faktury",
+	"Issue date": "Datum vystavení",
+	"Taxable supply date": "Datum znanitelného plnění",
+	"Due date": "Datum splatnosti",
+	"Receive date": "Datum přijetí",
+	"Customer": "Zákazník",
+	"Exchange rate": "Směnný kurz",
+	"Order number": "Číslo objednávky",
+	"Description": "Popis",
+	"Quantity": "Množství",
+	"Unit": "Jednotka",
+	"Unit price": "Jednotková cena",
+	"Price": "Cena",
+	"VAT": "DPH",
+	"Price with VAT": "Cena s DPH"
 }
