@@ -4,15 +4,15 @@ import Home from './component/Home';
 import { Routes, Route } from "react-router-dom";
 import Invoices from './component/Invoices';
 import Invoice from "./component/Invoice";
-import AppNavbar from './component/AppNavbar';
 import Setting from './component/Setting';
+import Navbar from './component/Navbar';
 
 export default class App extends Component {
 	render() {
 		return (
 			<div>
 				<div>
-					<AppNavbar/>
+					<Navbar/>
 				</div>
 				<main className="m-2">
 					<Routes>
