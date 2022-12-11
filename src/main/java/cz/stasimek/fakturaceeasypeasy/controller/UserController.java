@@ -1,7 +1,8 @@
 package cz.stasimek.fakturaceeasypeasy.controller;
 
+import cz.stasimek.fakturaceeasypeasy.config.user.AppUser;
+import cz.stasimek.fakturaceeasypeasy.controller.access.Access;
 import cz.stasimek.fakturaceeasypeasy.entity.User;
-import cz.stasimek.fakturaceeasypeasy.exception.BadRequestException;
 import cz.stasimek.fakturaceeasypeasy.service.UserService;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class UserController {
 			// TODO: load anonymous
 			return null;
 		}
-		return userService.findById(principal.getAttribute("appUserId"));
+		return userService.findById(Access.getUser(principal).getId());
 	}
 
 	@PutMapping("/user/{id}")
@@ -37,25 +38,9 @@ public class UserController {
 			@RequestBody User user,
 			@AuthenticationPrincipal OAuth2User principal
 	) {
-		User originalUser = userService.findById(id);
-
-		if (!id.equals(principal.getAttribute("appUserId"))) {
-			throw new BadRequestException(
-					"Unable to save user setting. You can save only yourself."
-			);
-		}
-
-		// Ensure that these values haven't been changed (id, login, provider, createdAt, deleted).
+		Access.check(id, principal, "update", userService);
 		user.setId(id);
-		user.setLogin(originalUser.getLogin());
-		user.setProvider(originalUser.getProvider());
-		user.setCreatedAt(originalUser.getCreatedAt());
-		user.setDeleted(originalUser.isDeleted());
-
-		User updatedUser = userService.update(user);
-
-		return ResponseEntity.ok(updatedUser);
+		return ResponseEntity.ok(userService.update(user));
 	}
-
 
 }
