@@ -4,7 +4,7 @@ import { withTranslation } from 'react-i18next';
 class Home extends Component {
 
 	render() {
-		const {t} = this.props;
+		//const {t} = this.props;
 		return (
 			<div>
 				<h2>Home</h2>

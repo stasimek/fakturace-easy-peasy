@@ -3,7 +3,7 @@ import { withTranslation } from 'react-i18next';
 import { Button, ButtonGroup, Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-class Invoices extends Component {
+class IssuedInvoices extends Component {
 
 	constructor(props) {
 		super(props);
@@ -12,7 +12,7 @@ class Invoices extends Component {
 	}
 
 	componentDidMount() {
-		fetch('/api/invoices')
+		fetch('/api/invoices/issued')
 				.then(response => response.json())
 				.then(data => this.setState({invoices: data}));
 	}
@@ -55,9 +55,9 @@ class Invoices extends Component {
 		return (
 			<div>
 				<div className="float-right">
-					<Button color="success" tag={Link} to="/invoice/new">Add Invoice</Button>
+					<Button color="success" tag={Link} to="/issued-invoice/new">{t('Issue new invoice')}</Button>
 				</div>
-				<h2>Invoices</h2>
+				<h2>{t('Issued invoices')}</h2>
 				<Table className="mt-4">
 					<thead>
 						<tr>
@@ -74,4 +74,4 @@ class Invoices extends Component {
 	}
 }
 
-export default withTranslation()(Invoices);
+export default withTranslation()(IssuedInvoices);

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
-import Options from './html/Options';
-import FormRow from './html/FormRow';
+import Options from '../component/html/Options';
+import FormRow from '../component/html/FormRow';
 import Cookies from 'js-cookie';
 
 class Setting extends Component {
