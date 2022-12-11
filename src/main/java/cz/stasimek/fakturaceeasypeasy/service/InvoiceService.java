@@ -18,6 +18,23 @@ public class InvoiceService implements AppService<Invoice> {
 	@Autowired
 	private InvoiceRepository invoiceRepository;
 
+	public Invoice create(Invoice invoice) {
+		return invoiceRepository.save(invoice);
+	}
+
+	public Invoice update(Invoice invoice) {
+		return invoiceRepository.save(invoice);
+	}
+
+	public void deleteById(UUID id) {
+		invoiceRepository.deleteById(id);
+	}
+
+	@Override
+	public Invoice findById(UUID id) {
+		return invoiceRepository.findById(id).orElseThrow();
+	}
+
 	public Invoice findLastIssued(User user) {
 		List<Invoice> lastInvoice = invoiceRepository.findLastIssuedByUser(
 				user, PageRequest.ofSize(1)
@@ -26,6 +43,14 @@ public class InvoiceService implements AppService<Invoice> {
 			return lastInvoice.get(0);
 		}
 		return null;
+	}
+
+	public Iterable<Invoice> findIssued(User user, int year) {
+		return invoiceRepository.findIssuedByUserAndYear(user, year);
+	}
+
+	public Iterable<Invoice> findReceived(User user, int year) {
+		return invoiceRepository.findReceivedByUserAndYear(user, year);
 	}
 
 	public String generateNewInvoiceNumber(User user) {

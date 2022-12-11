@@ -1,5 +1,6 @@
 package cz.stasimek.fakturaceeasypeasy.controller;
 
+import cz.stasimek.fakturaceeasypeasy.controller.access.Access;
 import cz.stasimek.fakturaceeasypeasy.entity.Invoice;
 import cz.stasimek.fakturaceeasypeasy.entity.User;
 import cz.stasimek.fakturaceeasypeasy.service.InvoiceService;
@@ -28,13 +29,22 @@ public class InvoiceController {
 	@Autowired
 	private InvoiceService invoiceService;
 
-	public InvoiceController(InvoiceRepository invoiceRepository) {
-		this.invoiceRepository = invoiceRepository;
+	@GetMapping("/invoices/issued/{year}")
+	public List<Invoice> getIssuedInvoices(
+			@PathVariable int year,
+			@AuthenticationPrincipal OAuth2User principal
+	) {
+		User user = Access.getUser(principal);
+		return IterableUtils.toList(invoiceService.findIssued(user, year));
 	}
 
-	@GetMapping("/invoices")
-	public List<Invoice> getInvoices() {
-		return IterableUtils.toList(invoiceRepository.findAll());
+	@GetMapping("/invoices/received/{year}")
+	public List<Invoice> getReceivedInvoices(
+			@PathVariable int year,
+			@AuthenticationPrincipal OAuth2User principal
+	) {
+		User user = Access.getUser(principal);
+		return IterableUtils.toList(invoiceService.findReceived(user, year));
 	}
 
 	@GetMapping("/invoices/generate-new-number")
@@ -44,27 +54,24 @@ public class InvoiceController {
 
 	@GetMapping("/invoice/{id}")
 	public Invoice getInvoice(@PathVariable UUID id) {
-		return invoiceRepository.findById(id).orElseThrow(RuntimeException::new);
+		return invoiceService.findById(id);
 	}
 
 	@PostMapping("/invoice")
 	public ResponseEntity createInvoice(@RequestBody Invoice invoice) throws URISyntaxException {
-		Invoice savedInvoice = invoiceRepository.save(invoice);
-		return ResponseEntity.created(new URI("/invoice/" + savedInvoice.getId())).body(savedInvoice);
+		Invoice newInvoice = invoiceService.create(invoice);
+		return ResponseEntity.created(new URI("/invoice/" + newInvoice.getId())).body(newInvoice);
 	}
 
 	@PutMapping("/invoice/{id}")
 	public ResponseEntity updateInvoice(@PathVariable UUID id, @RequestBody Invoice invoice) {
-		Invoice currentInvoice = invoiceRepository.findById(id).orElseThrow(RuntimeException::new);
-		currentInvoice.setNumber(invoice.getNumber());
-		currentInvoice = invoiceRepository.save(invoice);
-
-		return ResponseEntity.ok(currentInvoice);
+		Invoice updatedInvoice = invoiceService.update(invoice);
+		return ResponseEntity.ok(updatedInvoice);
 	}
 
 	@DeleteMapping("/invoice/{id}")
 	public ResponseEntity deleteInvoice(@PathVariable UUID id) {
-		invoiceRepository.deleteById(id);
-		return ResponseEntity.ok().build();
+		invoiceService.deleteById(id);
+		return ResponseEntity.noContent().build();
 	}
 }
