@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { withTranslation } from 'react-i18next';
-import {Link} from 'react-router-dom';
 import $ from 'jquery';
 import Cookies from 'js-cookie';
 import { NavbarText } from 'reactstrap';
@@ -36,7 +35,7 @@ class Login extends Component {
 		// CSRF
 		$.ajaxSetup({
 			beforeSend: function (xhr, settings) {
-				if (settings.type == 'POST' || settings.type == 'PUT' || settings.type == 'DELETE') {
+				if (settings.type === 'POST' || settings.type === 'PUT' || settings.type === 'DELETE') {
 					if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
 						// Only send the token to relative URLs i.e. locally.
 						xhr.setRequestHeader("X-XSRF-TOKEN", Cookies.get('XSRF-TOKEN'));
@@ -66,7 +65,7 @@ class Login extends Component {
 	}
 
 	render() {
-		const {t} = this.props;
+		//const {t} = this.props;
 		return (
 			<div>
 				<NavbarText className="text-danger error pe-3"></NavbarText>
