@@ -30,12 +30,12 @@ class Setting extends Component {
 			return Promise.all([
 				r1.json(), r2.json(), r3.json(), r4.json(), r5.json(), r6.json(),
 				r7.json(), r8.json()
-			])
+			]);
 		})
 		.then(([user, legalForm, country, vatType, vatPeriod, currency, taxOffice, czNace]) => {
 			this.setState({
-				item: user,
-			})
+				item: user
+			});
 			this.enums.legalForm = legalForm;
 			this.enums.country = country;
 			this.enums.vatType = vatType;
@@ -50,7 +50,7 @@ class Setting extends Component {
 		const target = event.target;
 		const value = target.value;
 		const name = target.name;
-		let item = {...this.state.item};
+		let item = this.state.item;
 		item[name] = value;
 		this.setState({item});
 	}
@@ -232,7 +232,7 @@ class Setting extends Component {
 						</FormGroup>
 					</FormRow>
 					<FormGroup>
-						<Button color="primary" type="submit">Save</Button>
+						<Button color="primary" type="submit">{t('Save')}</Button>
 					</FormGroup>
 				</Form>
 			</div>

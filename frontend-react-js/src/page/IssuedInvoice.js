@@ -45,7 +45,7 @@ class IssuedInvoice extends Component {
 			.then(([r1, r2, r3, r4]) => {
 				return Promise.all([
 					r1.text(), r2.json(), r3.json(), r4.json()
-				])
+				]);
 			})
 			.then(([newInvoiceNumber, user, subjects, currency]) => {
 				const emptyInvoiceRow = clone(this.emptyInvoiceRow);
@@ -79,7 +79,7 @@ class IssuedInvoice extends Component {
 	}
 
 	handleAddInvoiceRow() {
-		let item = clone(this.state.item);
+		let item = this.state.item;
 		const emptyInvoiceRow = clone(this.emptyInvoiceRow);
 		emptyInvoiceRow.unit = this.user.defaultUnit;
 		emptyInvoiceRow.unitPrice = this.user.defaultUnitPrice;
@@ -89,7 +89,7 @@ class IssuedInvoice extends Component {
 	}
 
 	handleRemoveInvoiceRow(index) {
-		let item = clone(this.state.item);
+		let item = this.state.item;
 		removeFromArray(item['items'], index);
 		this.setState({item});
 	}
@@ -113,7 +113,7 @@ class IssuedInvoice extends Component {
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				'X-XSRF-TOKEN': Cookies.get('XSRF-TOKEN'),
+				'X-XSRF-TOKEN': Cookies.get('XSRF-TOKEN')
 			},
 			body: JSON.stringify(item),
 		});
