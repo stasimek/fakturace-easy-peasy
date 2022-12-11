@@ -3,25 +3,24 @@ package cz.stasimek.fakturaceeasypeasy.config.user;
 import cz.stasimek.fakturaceeasypeasy.entity.User;
 import java.util.Collection;
 import java.util.Map;
-import java.util.UUID;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-public class AppOAuth2User implements OAuth2User {
+public class AppOAuth2User implements OAuth2User, AppUser {
 
-	private OAuth2User oAuth2User;
-	private UUID appUserId;
+	private final OAuth2User oAuth2User;
+
+	@Getter
+	private final User user;
 
 	public AppOAuth2User(OAuth2User oAuth2User, User user) {
 		this.oAuth2User = oAuth2User;
-		appUserId = user.getId();
+		this.user = user;
 	}
 
 	@Override
 	public Object getAttribute(String name) {
-		if ("appUserId".equals(name)) {
-			return appUserId;
-		}
 		return oAuth2User.getAttribute(name);
 	}
 
