@@ -35,3 +35,4 @@ build/
 /database
 /derby.log
 /frontend-react-js/node
+/nbproject/

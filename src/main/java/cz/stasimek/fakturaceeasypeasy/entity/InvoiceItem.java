@@ -33,11 +33,6 @@ public class InvoiceItem extends BaseEntity {
 	private String description;
 
 	@NotNull
-	@Size(max = 100)
-	@Column(length = 100, nullable = false)
-	private String originalUnitPrice;
-
-	@NotNull
 	@Column(nullable = false)
 	private BigDecimal unitPrice;
 

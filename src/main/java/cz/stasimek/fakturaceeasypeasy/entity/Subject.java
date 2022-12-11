@@ -1,9 +1,11 @@
 package cz.stasimek.fakturaceeasypeasy.entity;
 
+import cz.stasimek.fakturaceeasypeasy.entity.interfaces.HasUser;
 import cz.stasimek.fakturaceeasypeasy.enumeration.Country;
 import cz.stasimek.fakturaceeasypeasy.enumeration.Currency;
 import cz.stasimek.fakturaceeasypeasy.enumeration.SubjectLegalForm;
 import cz.stasimek.fakturaceeasypeasy.enumeration.SubjectType;
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -19,7 +21,7 @@ import org.springframework.validation.annotation.Validated;
 @Getter
 @Setter
 @Validated
-public class Subject extends BaseEntity {
+public class Subject extends BaseEntity implements HasUser {
 
 	@NotNull
 	@ManyToOne(optional = false)
@@ -78,4 +80,9 @@ public class Subject extends BaseEntity {
 	@Column(length = 3)
 	@Enumerated(EnumType.STRING)
 	private Currency defaultCurrency;
+
+	// Výchozí jednotková cena
+	@Column
+	private BigDecimal defaultUnitPrice;
+
 }

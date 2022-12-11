@@ -1,5 +1,6 @@
 package cz.stasimek.fakturaceeasypeasy.entity;
 
+import cz.stasimek.fakturaceeasypeasy.entity.interfaces.HasUser;
 import cz.stasimek.fakturaceeasypeasy.enumeration.Currency;
 import cz.stasimek.fakturaceeasypeasy.enumeration.InvoiceType;
 import java.math.BigDecimal;
@@ -21,7 +22,7 @@ import org.springframework.validation.annotation.Validated;
 @Getter
 @Setter
 @Validated
-public class Invoice extends BaseEntity {
+public class Invoice extends BaseEntity implements HasUser {
 
 	@NotNull
 	@ManyToOne(optional = false)

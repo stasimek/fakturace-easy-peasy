@@ -10,7 +10,7 @@ class Setting extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {item: {}};
-		this.enums = {legalForm: {}, country: {}};
+		this.enums = {};
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
@@ -191,11 +191,6 @@ class Setting extends Component {
 							<Input type="text" name="phone" id="phone" value={item.phone || ''}
 								   onChange={this.handleChange}/>
 						</FormGroup>
-						<FormGroup>
-							<Label for="defaultDuePeriod">{t('Default due period (days)')}</Label>
-							<Input type="text" name="defaultDuePeriod" id="defaultDuePeriod" value={item.defaultDuePeriod || ''}
-								   onChange={this.handleChange}/>
-						</FormGroup>
 					</FormRow>
 					<FormRow>
 						<FormGroup>
@@ -216,6 +211,23 @@ class Setting extends Component {
 						<FormGroup>
 							<Label for="bic">{t('BIC (SWIFT)')}</Label>
 							<Input type="text" name="bic" id="bic" value={item.bic || ''}
+								   onChange={this.handleChange}/>
+						</FormGroup>
+					</FormRow>
+					<FormRow>
+						<FormGroup>
+							<Label for="defaultDuePeriod">{t('Default due period (days)')}</Label>
+							<Input type="text" name="defaultDuePeriod" id="defaultDuePeriod" value={item.defaultDuePeriod || ''}
+								   onChange={this.handleChange}/>
+						</FormGroup>
+						<FormGroup>
+							<Label for="defaultUnit">{t('Default unit')}</Label>
+							<Input type="text" name="defaultUnit" id="defaultUnit" value={item.defaultUnit || ''}
+								   onChange={this.handleChange} placeholder="ks, hod..."/>
+						</FormGroup>
+						<FormGroup>
+							<Label for="defaultUnitPrice">{t('Default unit price')}</Label>
+							<Input type="text" name="defaultUnitPrice" id="defaultUnitPrice" value={item.defaultUnitPrice || ''}
 								   onChange={this.handleChange}/>
 						</FormGroup>
 					</FormRow>

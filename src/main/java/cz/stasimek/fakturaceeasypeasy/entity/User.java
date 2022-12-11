@@ -8,6 +8,7 @@ import cz.stasimek.fakturaceeasypeasy.enumeration.SubjectLegalForm;
 import cz.stasimek.fakturaceeasypeasy.enumeration.TaxOffice;
 import cz.stasimek.fakturaceeasypeasy.enumeration.VatPeriod;
 import cz.stasimek.fakturaceeasypeasy.enumeration.VatType;
+import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -21,7 +22,7 @@ import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 
 @Entity
-@Table(name="`user`")
+@Table(name = "`user`")
 @Getter
 @Setter
 @Validated
@@ -131,4 +132,14 @@ public class User extends BaseEntity {
 	// Výchozí doba splatnosti faktury
 	@Column
 	private Integer defaultDuePeriod = 14;
+
+	// Výchozí jednotka
+	@Size(max = 50)
+	@Column(length = 50)
+	private String defaultUnit;
+
+	// Výchozí jednotková cena
+	@Column
+	private BigDecimal defaultUnitPrice;
+
 }
