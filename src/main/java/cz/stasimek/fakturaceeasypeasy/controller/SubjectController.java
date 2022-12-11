@@ -28,6 +28,11 @@ public class SubjectController {
 	@Autowired
 	private SubjectService subjectService;
 
+	@GetMapping("/subjects")
+	public List<Subject> getSubjects(@AuthenticationPrincipal OAuth2User principal) {
+		return IterableUtils.toList(subjectService.findAll(Access.getUser(principal)));
+	}
+
 	@GetMapping("/subjects/customers")
 	public List<Subject> getCustomers(@AuthenticationPrincipal OAuth2User principal) {
 		return IterableUtils.toList(subjectService.findAllCustomers(Access.getUser(principal)));

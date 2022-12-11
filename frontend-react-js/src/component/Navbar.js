@@ -43,6 +43,9 @@ class Navbar extends Component {
 						<NavItem>
 							<NavLink tag={Link} to="/received-invoices">{t('Received invoices')}</NavLink>
 						</NavItem>
+						<NavItem>
+							<NavLink tag={Link} to="/subjects">{t('Subjects')}</NavLink>
+						</NavItem>
 						<UncontrolledDropdown nav inNavbar>
 							<DropdownToggle nav caret>
 								Options

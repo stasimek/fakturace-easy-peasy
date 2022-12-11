@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface SubjectRepository extends CrudRepository<Subject, UUID> {
 
+	Iterable<Subject> findByUser(@Param("user") User user);
+
 	@Query(
 			"SELECT s"
 			+ " FROM Subject s"

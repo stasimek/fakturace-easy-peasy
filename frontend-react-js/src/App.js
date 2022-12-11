@@ -6,6 +6,8 @@ import IssuedInvoices from './page/IssuedInvoices';
 import IssuedInvoice from "./page/IssuedInvoice";
 import ReceivedInvoices from './page/ReceivedInvoices';
 import ReceivedInvoice from "./page/ReceivedInvoice";
+import Subjects from './page/Subjects';
+import Subject from "./page/Subject";
 import Setting from './page/Setting';
 import Navbar from './component/Navbar';
 
@@ -23,6 +25,8 @@ export default class App extends Component {
 						<Route path='/received-invoices' exact={true} element={<ReceivedInvoices/>}/>
 						<Route path='/issued-invoice/:id' element={<IssuedInvoice/>}/>
 						<Route path='/received-invoice/:id' element={<ReceivedInvoice/>}/>
+						<Route path='/subjects' element={<Subjects/>}/>
+						<Route path='/subject/:id' element={<Subject/>}/>
 						<Route path='/setting' element={<Setting/>}/>
 					</Routes>
 				</main>

@@ -31,6 +31,10 @@ public class SubjectService implements AppService<Subject> {
 		return subjectRepository.findById(id).orElseThrow();
 	}
 
+	public Iterable<Subject> findAll(User user) {
+		return subjectRepository.findByUser(user);
+	}
+
 	public Iterable<Subject> findAllCustomers(User user) {
 		return subjectRepository.findAllCustomersByUser(user);
 	}
@@ -38,6 +42,5 @@ public class SubjectService implements AppService<Subject> {
 	public Iterable<Subject> findAllSuppliers(User user) {
 		return subjectRepository.findAllSuppliersByUser(user);
 	}
-
 
 }

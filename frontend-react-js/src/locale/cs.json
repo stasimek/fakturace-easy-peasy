@@ -4,6 +4,9 @@
 	"Cancel": "Zrušit",
 	"Add row": "Přidat řádek",
 	"Remove row": "Odstranit řádek",
+	"Edit": "Upravit",
+	"Delete": "Smazat",
+	"Actions": "Akce",
 
 	"Setting": "Nastavení",
 	"Email": "E-mail",
@@ -56,5 +59,14 @@
 	"Unit price": "Jednotková cena",
 	"Price": "Cena",
 	"VAT": "DPH",
-	"Price with VAT": "Cena s DPH"
+	"Price with VAT": "Cena s DPH",
+
+	"Subject": "Subjekt",
+	"Subjects": "Subjekty",
+	"Add new subject": "Přidat nový subjekt",
+	"New subject": "Nový subjekt",
+	"Type": "Typ",
+	"Company name": "Jméno společnosti",
+	"Default currency": "Výchozí měna"
+
 }
