@@ -11,6 +11,7 @@ import clone from '../util/clone'
 import removeFromArray from '../util/removeFromArray'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import Api from '../service/Api'
 
 class IssuedInvoice extends Component {
 
@@ -34,39 +35,31 @@ class IssuedInvoice extends Component {
 	}
 
 	async componentDidMount() {
-
-		if (this.props.params.id === 'new') {
-			Promise.all([
-				fetch('/api/invoices/generate-new-number'),
-				fetch('/api/user'),
-				fetch('/api/subjects/customers'),
-				fetch('/api/enum/currency'),
-			])
-			.then(([r1, r2, r3, r4]) => {
-				return Promise.all([
-					r1.text(), r2.json(), r3.json(), r4.json()
-				]);
-			})
-			.then(([newInvoiceNumber, user, subjects, currency]) => {
-				const emptyInvoiceRow = clone(this.emptyInvoiceRow);
-				emptyInvoiceRow.unit = user.defaultUnit;
-				emptyInvoiceRow.unitPrice = user.defaultUnitPrice;
-				this.setState({
-					item: {
-						number: newInvoiceNumber,
-						items: [
-							emptyInvoiceRow
-						]
-					}
-				});
-				this.user = user;
-				this.subjects = subjects;
-				this.enums.currency = currency;
+		const isNew = this.props.params.id === 'new';
+		const urls = [
+			'/api/invoices/generate-new-number',
+			'/api/user',
+			'/api/subjects/customers',
+			'/api/enum/currency',
+			!isNew ? '/api/invoice/' + this.props.params.id : null
+		];
+		const thenFunction = ([newInvoiceNumber, user, subjects, currency, invoice]) => {
+			this.user = user;
+			this.subjects = subjects;
+			this.enums.currency = currency;
+			const emptyInvoiceRow = clone(this.emptyInvoiceRow);
+			emptyInvoiceRow.unit = user.defaultUnit;
+			emptyInvoiceRow.unitPrice = user.defaultUnitPrice;
+			this.setState({
+				item: invoice || {
+					number: newInvoiceNumber,
+					items: [
+						emptyInvoiceRow
+					]
+				}
 			});
-		} else {
-			//const invoice = await (await fetch(`/api/invoice/${this.props.match.params.id}`)).json();
-			//this.setState({item: invoice});
-		}
+		};
+		Api.getMany(urls, thenFunction);
 	}
 
 	handleChange(event) {
@@ -107,16 +100,13 @@ class IssuedInvoice extends Component {
 		event.preventDefault();
 		const {item} = this.state;
 		item.type = 'ISSUED';
-
-		await fetch('/api/invoice' + (item.id ? '/' + item.id : ''), {
-			method: (item.id) ? 'PUT' : 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-				'X-XSRF-TOKEN': Cookies.get('XSRF-TOKEN')
-			},
-			body: JSON.stringify(item),
-		});
+		const {t} = this.props;
+		await Api.call(
+			(item.id) ? 'PUT' : 'POST',
+			'/api/invoice' + (item.id ? '/' + item.id : ''),
+			item,
+			t('Invoice saved.')
+		);
 		this.props.history.push('/issued-invoices');
 	}
 

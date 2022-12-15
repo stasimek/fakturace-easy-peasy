@@ -10,12 +10,14 @@ import Subjects from './page/Subjects';
 import Subject from "./page/Subject";
 import Setting from './page/Setting';
 import Navbar from './component/Navbar';
+import Toast from './component/Toast';
 
 export default class App extends Component {
 	render() {
 		return (
 			<div>
 				<div>
+					<Toast/>
 					<Navbar/>
 				</div>
 				<main className="m-2">

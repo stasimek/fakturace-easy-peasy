@@ -7,6 +7,7 @@
 	"Edit": "Upravit",
 	"Delete": "Smazat",
 	"Actions": "Akce",
+	"Something went wrong.": "Něco se nepovedlo.",
 
 	"Setting": "Nastavení",
 	"Email": "E-mail",
@@ -35,6 +36,7 @@
 	"Default due period (days)": "Výchozí splatnost faktur (dní)",
 	"Default unit": "Výchozí jednotka",
 	"Default unit price": "Výchozí jednotková cena",
+	"Settings saved.": "Nastavení uloženo",
 
 	"Invoice": "Faktura",
 	"Issued invoices": "Vydané faktury",
@@ -60,6 +62,7 @@
 	"Price": "Cena",
 	"VAT": "DPH",
 	"Price with VAT": "Cena s DPH",
+	"Invoice saved.": "Faktura uložena",
 
 	"Subject": "Subjekt",
 	"Subjects": "Subjekty",
@@ -67,6 +70,7 @@
 	"New subject": "Nový subjekt",
 	"Type": "Typ",
 	"Company name": "Jméno společnosti",
-	"Default currency": "Výchozí měna"
+	"Default currency": "Výchozí měna",
+	"Subject saved.": "Subjekt uložen"
 
 }

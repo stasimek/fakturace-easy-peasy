@@ -3,8 +3,8 @@ import { withTranslation } from 'react-i18next';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import Options from '../component/html/Options';
 import FormRow from '../component/html/FormRow';
-import Cookies from 'js-cookie';
 import withParams from '../util/withParams'
+import Api from '../service/Api'
 
 class Subject extends Component {
 
@@ -18,51 +18,25 @@ class Subject extends Component {
 	}
 
 	async componentDidMount() {
-		if (this.props.params.id === 'new') {
-			Promise.all([
-				fetch('/api/enum/subject-type'),
-				fetch('/api/enum/subject-legal-form'),
-				fetch('/api/enum/country'),
-				fetch('/api/enum/currency'),
-			])
-			.then(([r1, r2, r3, r4]) => {
-				return Promise.all([
-					r1.json(), r2.json(), r3.json(), r4.json()
-				]);
-			})
-			.then(([type, legalForm, country, currency]) => {
-				this.setState({
-					item: {}
-				});
-				this.enums.type = type;
-				this.enums.legalForm = legalForm;
-				this.enums.country = country;
-				this.enums.currency = currency;
+		const isNew = this.props.params.id === 'new';
+		const urls = [
+			'/api/enum/subject-type',
+			'/api/enum/subject-legal-form',
+			'/api/enum/country',
+			'/api/enum/currency',
+			!isNew ? '/api/subject/' + this.props.params.id : null
+		];
+		const thenFunction = ([type, legalForm, country, currency, subject]) => {
+			this.enums.type = type;
+			this.enums.legalForm = legalForm;
+			this.enums.country = country;
+			this.enums.currency = currency;
+			this.setState({
+				item: subject || {}
 			});
-		} else {
-			Promise.all([
-				fetch('/api/subject/' + this.props.params.id),
-				fetch('/api/enum/subject-type'),
-				fetch('/api/enum/subject-legal-form'),
-				fetch('/api/enum/country'),
-				fetch('/api/enum/currency'),
-			])
-			.then(([r1, r2, r3, r4, r5]) => {
-				return Promise.all([
-					r1.json(), r2.json(), r3.json(), r4.json(), r5.json()
-				]);
-			})
-			.then(([subject, type, legalForm, country, currency]) => {
-				this.setState({
-					item: subject
-				});
-				this.originalCompanyName = subject.companyName;
-				this.enums.type = type;
-				this.enums.legalForm = legalForm;
-				this.enums.country = country;
-				this.enums.currency = currency;
-			});
-		}
+			this.originalCompanyName = !isNew ? subject.companyName : null;
+		};
+		Api.getMany(urls, thenFunction);
 	}
 
 	handleChange(event) {
@@ -77,16 +51,12 @@ class Subject extends Component {
 	async handleSubmit(event) {
 		event.preventDefault();
 		const {item} = this.state;
-
-		await fetch('/api/subject' + (item.id ? '/' + item.id : ''), {
-			method: (item.id) ? 'PUT' : 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-				'X-XSRF-TOKEN': Cookies.get('XSRF-TOKEN')
-			},
-			body: JSON.stringify(item),
-		});
+		const {t} = this.props;
+		await Api.call(
+			(item.id) ? 'PUT' : 'POST',
+			'/api/subject' + (item.id ? '/' + item.id : ''),
+			item, t('Subject saved.')
+		);
 		this.props.history.push('/subjects');
 	}
 

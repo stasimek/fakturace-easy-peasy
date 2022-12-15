@@ -4,6 +4,7 @@ import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import Options from '../component/html/Options';
 import FormRow from '../component/html/FormRow';
 import Cookies from 'js-cookie';
+import Api from '../service/Api'
 
 class Setting extends Component {
 
@@ -16,23 +17,16 @@ class Setting extends Component {
 	}
 
 	async componentDidMount() {
-		Promise.all([
-			fetch('/api/user'),
-			fetch('/api/enum/subject-legal-form'),
-			fetch('/api/enum/country'),
-			fetch('/api/enum/vat-type'),
-			fetch('/api/enum/vat-period'),
-			fetch('/api/enum/currency'),
-			fetch('/api/enum/tax-office'),
-			fetch('/api/enum/cz-nace'),
-		])
-		.then(([r1, r2, r3, r4, r5, r6, r7, r8]) => {
-			return Promise.all([
-				r1.json(), r2.json(), r3.json(), r4.json(), r5.json(), r6.json(),
-				r7.json(), r8.json()
-			]);
-		})
-		.then(([user, legalForm, country, vatType, vatPeriod, currency, taxOffice, czNace]) => {
+		Api.getMany([
+			'/api/user',
+			'/api/enum/subject-legal-form',
+			'/api/enum/country',
+			'/api/enum/vat-type',
+			'/api/enum/vat-period',
+			'/api/enum/currency',
+			'/api/enum/tax-office',
+			'/api/enum/cz-nace',
+		], ([user, legalForm, country, vatType, vatPeriod, currency, taxOffice, czNace]) => {
 			this.setState({
 				item: user
 			});
@@ -58,16 +52,13 @@ class Setting extends Component {
 	async handleSubmit(event) {
 		event.preventDefault();
 		const {item} = this.state;
-
-		await fetch('/api/user/' + item.id, {
-			method: 'PUT',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json',
-				'X-XSRF-TOKEN': Cookies.get('XSRF-TOKEN')
-			},
-			body: JSON.stringify(item),
-		});
+		const {t} = this.props;
+		await Api.call(
+			'PUT',
+			'/api/user/' + item.id,
+			item,
+			t('Settings saved.')
+		);
 	}
 
 	render() {
