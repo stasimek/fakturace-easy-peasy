@@ -19,10 +19,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.validation.annotation.Validated;
 
 @Entity
 @Table(name = "`user`")
+@SQLDelete(sql = "UPDATE APP.\"user\" SET deleted = true WHERE id = ?")
 @Getter
 @Setter
 @Validated

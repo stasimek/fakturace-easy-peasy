@@ -3,11 +3,11 @@ import { withTranslation } from 'react-i18next';
 
 /**
  * Render <option>s using parameter "map" or "list" as a source.
- * 
+ *
  * Usage:
  *     <Options map={object}/>
  *     or
- *     <Options list={listOfObjects} key="keyAttribute" value="valueAttribute"/>
+ *     <Options list={listOfObjects} itemId="idAttribute" itemLabel="labelAttribute"/>
  *
  * Optional attributes:
  *     nonEmpty - Don't render empty option.
@@ -15,13 +15,16 @@ import { withTranslation } from 'react-i18next';
 class Options extends Component {
 
 	render() {
-		if (!this.props.map && !(this.props.list && this.props.key && this.props.value)) {
+		if (
+				this.props.map === undefined
+				&& (!Array.isArray(this.props.list) || this.props.itemId === undefined || this.props.itemLabel === undefined)
+		) {
 			return;
 		}
 
 		const {t} = this.props;
 		const emptyOption = this.props.nonEmpty === undefined ? <option>{t('--')}</option> : '';
-		if (this.props.map) {
+		if (this.props.map !== undefined) {
 			return (
 				<Fragment>
 					{emptyOption}
@@ -33,7 +36,7 @@ class Options extends Component {
 				<Fragment>
 					{emptyOption}
 					{this.props.list.map(
-							v => <option value={v[this.props.key]}>{v[this.props.value]}</option>
+							v => <option value={v[this.props.itemId]}>{v[this.props.itemLabel]}</option>
 					)}
 				</Fragment>
 			)

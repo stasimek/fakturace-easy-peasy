@@ -44,7 +44,7 @@ class ReceivedInvoices extends Component {
 					<td style={{whiteSpace: 'nowrap'}}>{invoice.number}</td>
 					<td>
 						<ButtonGroup>
-							<Button size="sm" color="primary" tag={Link} to={"/invoice/" + invoice.id}>{t('Edit')}</Button>
+							<Button size="sm" color="primary" tag={Link} to={"/received-invoice/" + invoice.id}>{t('Edit')}</Button>
 							<Button size="sm" color="danger" onClick={() => this.remove(invoice.id)}>{t('Delete')}</Button>
 						</ButtonGroup>
 					</td>

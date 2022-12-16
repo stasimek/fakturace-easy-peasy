@@ -15,7 +15,11 @@ export default class Api {
 			body: JSON.stringify(body),
 		}).then((response) => {
 			if (response.ok) {
-				return response.json();
+				if(response.headers.get("Content-Type") === 'application/json') {
+					return response.json();
+				} else {
+					return response.text();
+				}
 			}
 			return Promise.reject(response);
 		}).then((response) => {

@@ -53,24 +53,41 @@ public class InvoiceController {
 	}
 
 	@GetMapping("/invoice/{id}")
-	public Invoice getInvoice(@PathVariable UUID id) {
+	public Invoice getInvoice(
+			@PathVariable UUID id, @AuthenticationPrincipal OAuth2User principal
+	) {
+		Access.check(id, principal, "get", invoiceService);
 		return invoiceService.findById(id);
 	}
 
 	@PostMapping("/invoice")
-	public ResponseEntity createInvoice(@RequestBody Invoice invoice) throws URISyntaxException {
+	public ResponseEntity createInvoice(
+			@RequestBody Invoice invoice,
+			@AuthenticationPrincipal OAuth2User principal
+	) throws URISyntaxException {
+		invoice.setUser(Access.getUser(principal));
 		Invoice newInvoice = invoiceService.create(invoice);
-		return ResponseEntity.created(new URI("/invoice/" + newInvoice.getId())).body(newInvoice);
+		return ResponseEntity
+				.created(new URI("/invoice/" + newInvoice.getId()))
+				.body(newInvoice);
 	}
 
 	@PutMapping("/invoice/{id}")
-	public ResponseEntity updateInvoice(@PathVariable UUID id, @RequestBody Invoice invoice) {
-		Invoice updatedInvoice = invoiceService.update(invoice);
-		return ResponseEntity.ok(updatedInvoice);
+	public ResponseEntity updateInvoice(
+			@PathVariable UUID id,
+			@RequestBody Invoice invoice,
+			@AuthenticationPrincipal OAuth2User principal
+	) {
+		Access.check(id, principal, "update", invoiceService);
+		invoice.setId(id);
+		return ResponseEntity.ok(invoiceService.update(invoice));
 	}
 
 	@DeleteMapping("/invoice/{id}")
-	public ResponseEntity deleteInvoice(@PathVariable UUID id) {
+	public ResponseEntity deleteInvoice(
+			@PathVariable UUID id, @AuthenticationPrincipal OAuth2User principal
+	) {
+		Access.check(id, principal, "delete", invoiceService);
 		invoiceService.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}

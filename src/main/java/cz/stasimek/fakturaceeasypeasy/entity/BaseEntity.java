@@ -11,21 +11,23 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.PastOrPresent;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @MappedSuperclass
-@SQLDelete(sql = "UPDATE #{#entityName} SET deleted = true WHERE id = ?")
+// @SQLDelete doesn't work here. Must be in each entity.
+// @SQLDelete(sql = "UPDATE #{#entityName} SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 @FilterDef(name = "deletedFilter", parameters = @ParamDef(name = "deleted", type = "boolean"))
 @Filter(name = "deletedFilter", condition = "deleted = :deleted")
 @Getter
 @Setter
+@EqualsAndHashCode(of = "id")
 public abstract class BaseEntity
 		implements Identifiable<UUID>, Auditable, SoftDeletable, Serializable {
 

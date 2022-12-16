@@ -50,6 +50,9 @@ class IssuedInvoice extends Component {
 			const emptyInvoiceRow = clone(this.emptyInvoiceRow);
 			emptyInvoiceRow.unit = user.defaultUnit;
 			emptyInvoiceRow.unitPrice = user.defaultUnitPrice;
+			if (invoice !== undefined) {
+				invoice.subject = invoice.subject.id;
+			}
 			this.setState({
 				item: invoice || {
 					number: newInvoiceNumber,
@@ -100,6 +103,7 @@ class IssuedInvoice extends Component {
 		event.preventDefault();
 		const {item} = this.state;
 		item.type = 'ISSUED';
+		item.subject = this.subjects.find(o => o.id === item.subject);
 		const {t} = this.props;
 		await Api.call(
 			(item.id) ? 'PUT' : 'POST',
@@ -157,7 +161,7 @@ class IssuedInvoice extends Component {
 							<Input type="select" name="subject" id="subject"
 								   value={item.subject || ''}
 								   onChange={this.handleChange}>
-								<Options list={this.subjects} key="id" value="companyName"/>
+								<Options list={this.subjects} itemId="id" itemLabel="companyName"/>
 							</Input>
 						</FormGroup>
 					</FormRow>

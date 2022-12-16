@@ -1,5 +1,6 @@
 package cz.stasimek.fakturaceeasypeasy.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import cz.stasimek.fakturaceeasypeasy.entity.interfaces.HasUser;
 import cz.stasimek.fakturaceeasypeasy.enumeration.Currency;
 import cz.stasimek.fakturaceeasypeasy.enumeration.InvoiceType;
@@ -16,9 +17,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.validation.annotation.Validated;
 
 @Entity
+@SQLDelete(sql = "UPDATE APP.invoice SET deleted = true WHERE id = ?")
 @Getter
 @Setter
 @Validated
@@ -81,6 +85,8 @@ public class Invoice extends BaseEntity implements HasUser {
 	@Column(length = 255)
 	private String description;
 
+	@JsonManagedReference
 	@OneToMany(mappedBy = "invoice")
+	@Where(clause = "deleted = false")
 	private List<InvoiceItem> items;
 }

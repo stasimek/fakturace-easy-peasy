@@ -47,6 +47,7 @@ public class SubjectController {
 	public Subject getSubject(
 			@PathVariable UUID id, @AuthenticationPrincipal OAuth2User principal
 	) {
+		Access.check(id, principal, "get", subjectService);
 		return subjectService.findById(id);
 	}
 

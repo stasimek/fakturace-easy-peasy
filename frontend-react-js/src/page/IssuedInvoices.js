@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withTranslation } from 'react-i18next';
 import { Button, ButtonGroup, Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import Api from '../service/Api'
 
 class IssuedInvoices extends Component {
 
@@ -12,22 +13,18 @@ class IssuedInvoices extends Component {
 	}
 
 	componentDidMount() {
-		fetch('/api/invoices/issued')
+		fetch('/api/invoices/issued/2022')
 				.then(response => response.json())
 				.then(data => this.setState({invoices: data}));
 	}
 
 	async remove(id) {
-		await fetch(`/api/invoice/${id}`, {
-			method: 'DELETE',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			}
-		}).then(() => {
-			let updatedInvoices = [...this.state.invoices].filter(i => i.id !== id);
-			this.setState({invoices: updatedInvoices});
-		});
+		const {t} = this.props;
+		Api.call('DELETE', '/api/invoice/' + id, null, t('Invoice deleted.'))
+			.then(() => {
+				let updatedInvoices = [...this.state.invoices].filter(i => i.id !== id);
+				this.setState({invoices: updatedInvoices});
+			});
 	}
 
 	render() {
@@ -44,7 +41,7 @@ class IssuedInvoices extends Component {
 					<td style={{whiteSpace: 'nowrap'}}>{invoice.number}</td>
 					<td>
 						<ButtonGroup>
-							<Button size="sm" color="primary" tag={Link} to={"/invoice/" + invoice.id}>{t('Edit')}</Button>
+							<Button size="sm" color="primary" tag={Link} to={"/issued-invoice/" + invoice.id}>{t('Edit')}</Button>
 							<Button size="sm" color="danger" onClick={() => this.remove(invoice.id)}>{t('Delete')}</Button>
 						</ButtonGroup>
 					</td>
