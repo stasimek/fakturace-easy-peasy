@@ -9,7 +9,6 @@ import org.hibernate.annotations.Where
 import org.springframework.validation.annotation.Validated
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.time.ZonedDateTime
 import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
@@ -78,7 +77,7 @@ open class Invoice : BaseEntity(), HasUser {
     open var description: String? = null
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "invoice")
+    @OneToMany(mappedBy = "invoice", targetEntity = InvoiceItem::class)
     @Where(clause = "deleted = false")
     open val items: List<InvoiceItem> = ArrayList<InvoiceItem>()
 }

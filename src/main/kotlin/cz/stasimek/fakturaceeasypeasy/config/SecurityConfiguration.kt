@@ -90,10 +90,12 @@ class SecurityConfiguration(
                 }
                 // On success redirect user to original URL stored in session "login.redirectUri".
                 o.successHandler { request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication ->
-                    val redirectUri = request.session.getAttribute("login.redirectUri") as String
-                    request.session.removeAttribute("login.redirectUri")
-                    val handler = SimpleUrlAuthenticationSuccessHandler(redirectUri)
-                    handler.onAuthenticationSuccess(request, response, authentication)
+                    val redirectUri = request.session.getAttribute("login.redirectUri") as String?
+                    if (redirectUri != null) {
+                        request.session.removeAttribute("login.redirectUri")
+                        val handler = SimpleUrlAuthenticationSuccessHandler(redirectUri)
+                        handler.onAuthenticationSuccess(request, response, authentication)
+                    }
                 }
             }
             .build()
